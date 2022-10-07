@@ -1,5 +1,23 @@
-﻿Import-Module ActiveDirectory
+﻿
+function DisplayMenu {
+Clear-Host
+Write-Host @"
+
+          MENU POWERSHELL POUR L'ACTIVE DIRECTORY           
+                                                            
+ 1) Importer les utilisateurs à partir du CSV               
+ 2) Exit                                                    
+
+
+"@ -ForegroundColor black -BackgroundColor white
+Write-Host "Choisir son option"
+$MENU = Read-Host "option"
+Import-Module ActiveDirectory
 Import-Module 'Microsoft.PowerShell.Security'
+Switch ($MENU)
+{
+
+1 {
 
 
 $fichiercsv = Import-Csv -Delimiter ";" -Path C:\Users\Administrateur\Desktop\import.csv
@@ -69,7 +87,7 @@ Write-Host 'utilisateur' $Username 'existe déjà'
 
 else {
 
-New-ADUser -SamAccountName $Username -UserPrincipalName "$Username@aboukherouba.LAN" -Name "$Prenom $Nom" -GivenName $Prenom -Surname $Nom -Enabled $True -DisplayName "$Nom, $Prenom" -Path $chemin -AccountPassword (convertto-securestring $Password -AsPlainText -Force)
+New-ADUser -SamAccountName $Username -UserPrincipalName "$Username@aboukherouba.LAN" -Name "$Prenom $Nom" -GivenName $Prenom -Surname $Nom -Enabled $true -DisplayName "$Nom, $Prenom" -Path $chemin -AccountPassword (convertto-securestring $Password -AsPlainText -Force)
 Write-Host "$Username vient tout juste de se créer"
 }
 
@@ -92,8 +110,26 @@ If ( $ID -le 50 )  {
 
 Write-Host 'veuillez patientez afin que la console redémarre avec les changements' -ForegroundColor black -BackgroundColor white
 Start-Sleep -Seconds 2
-Start-Process "C:\Users\Administrateur\Desktop\Console1.msc"
 
 
 
 
+DisplayMenu
+}
+
+3 {
+#OPTION3 - EXIT
+Write-Host "Merci a bientot"
+Start-Sleep -Seconds 2
+Break
+}
+
+default {
+#DEFAULT OPTION
+Write-Host "Option impossible"
+Start-Sleep -Seconds 2
+DisplayMenu
+}
+}
+}
+DisplayMenu
